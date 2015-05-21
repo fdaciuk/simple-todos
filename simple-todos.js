@@ -1,3 +1,5 @@
+/* I stopped here: https://www.meteor.com/try/8#sessionisareactivedatastorefortheclient */
+
 Tasks = new Mongo.Collection( 'tasks' );
 
 if( Meteor.isClient ) {
