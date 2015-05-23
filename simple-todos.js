@@ -3,13 +3,21 @@
 Tasks = new Mongo.Collection( 'tasks' );
 
 if( Meteor.isClient ) {
+  Meteor.subscribe( 'tasks' );
   Template.body.helpers({
     tasks: function() {
       if( Session.get( 'hideCompleted' ) ) {
-        return Tasks.find({ checked: { $ne: true }}, { sort: { createdAt: -1 }});
+        return Tasks.find({
+          checked: { $ne: true }
+        }, {
+          sort: { createdAt: -1 }
+        });
       }
       else {
-        return Tasks.find({}, { sort: {createdAt: -1 }});
+        return Tasks.find({
+        }, {
+          sort: {createdAt: -1 }
+        });
       }
     },
     hideCompleted: function() {
@@ -67,3 +75,9 @@ Meteor.methods({
     Tasks.update( taskId, { $set: { checked: setChecked }});
   }
 });
+
+if( Meteor.isServer ) {
+  Meteor.publish( 'tasks', function() {
+    return Tasks.find();
+  });
+}
